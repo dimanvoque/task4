@@ -1,7 +1,13 @@
-FROM openjdk:8-jdk-alpine
+FROM maven:3-jdk-8-alpine
 
-WORKDIR /app
+WORKDIR /dostavimvse
+
 COPY . .
-RUN cd target
 
-CMD ["java", "-jar", "dostavimvse-0.0.1-SNAPSHOT.jar"]
+RUN mvn install -Dstart-class=Main
+RUN java  -jar target/dostavimvse-0.0.1-SNAPSHOT.jar
+
+RUN mvn clean install -Dstart-class=ru.fivt.dostavimvse.DostavimvseApplication
+RUN cp target/dostavimvse-0.0.1-SNAPSHOT.jar DostavimvseApplication.jar
+
+ENTRYPOINT java -jar DostavimvseApplication.jar
